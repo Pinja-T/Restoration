@@ -77,5 +77,6 @@ Material:
     - _ZTest: 5
     - _ZWrite: 1
     - _ZWriteControl: 1
+    - _size: 0
     m_Colors: []
   m_BuildTextureStacks: []

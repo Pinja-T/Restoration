@@ -11,7 +11,7 @@ public class ItemID : MonoBehaviour
     {
         if(other.tag != "Ground")
         {
-            pickUpScript.Drop();
+            //pickUpScript.Drop();
         }
             
     }

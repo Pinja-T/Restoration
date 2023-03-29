@@ -6,11 +6,15 @@ public class Statue : MonoBehaviour
 {
     [SerializeField] string statueCode;
     public bool isStatueDone = false;
+    private bool _sDone;
+    GameMechanics gM;
+    PickUp puS;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        puS = GameObject.Find("ItemHolder").GetComponent<PickUp>();
+        gM = GameObject.Find("GameMechanic").GetComponent<GameMechanics>();
     }
 
     // Update is called once per frame
@@ -41,7 +45,13 @@ public class Statue : MonoBehaviour
 
     void CompleteStatue(GameObject key)
     {
-        GameObject.Destroy(key);
+        puS.Drop();
+        GameObject.Destroy(key,1);
         isStatueDone = true;
+        _sDone = true;
+        if (_sDone)
+        {
+            gM.i++;
+        }
     }
 }

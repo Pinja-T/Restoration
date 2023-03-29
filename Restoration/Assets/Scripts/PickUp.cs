@@ -5,6 +5,8 @@ using UnityEngine;
 public class PickUp : MonoBehaviour
 {
     public bool itemPicked = false;
+    [SerializeField] GameObject Hands;
+    Animator anim;
     Rigidbody rb;
     Transform item;
     public float CooldownTime;
@@ -13,13 +15,15 @@ public class PickUp : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        anim = Hands.GetComponent<Animator>();
+        StartCoroutine(stAnim());
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.F) && cooldownUntilNextPress < Time.time)
+        // && cooldownUntilNextPress < Time.time
+        if (Input.GetKeyDown(KeyCode.F))
         {
             if(!itemPicked)
             {
@@ -44,37 +48,45 @@ public class PickUp : MonoBehaviour
             cooldownUntilNextPress = Time.time + CooldownTime;
         }
     }
+    private void FixedUpdate()
+    {
+        if (rb != null)
+        {
+            Vector3 nP = Vector3.Lerp(item.position, this.transform.position, Time.deltaTime * 2f);
+            rb.MovePosition(nP);
+        }
+    }
 
     public void Drop()
     {
+        rb.useGravity = true;
+        rb = null;
+        anim.SetTrigger("Drop");
 
-        rb.isKinematic = false;
-        item.parent = null;
+        //rb.isKinematic = false;
+        //item.parent = null;
         itemPicked = false;
+        anim.SetBool("Holding", false);
+
     }
 
     public void PickUpItem(RaycastHit h)
     {
         rb = h.transform.GetComponent<Rigidbody>();
         item = h.transform;
+        rb.useGravity = false;
+        anim.SetTrigger("Pick Up");
 
-
-        rb.isKinematic = true;
-        item.parent = this.transform;
-        StartCoroutine(LerpPosition(this.transform.position, 0.05f));
+        //rb.isKinematic = true;
+        //item.parent = this.transform;
+        //StartCoroutine(LerpPosition(this.transform.position, 0.1f));
         itemPicked = true;
+        anim.SetBool("Holding", true);
     }
 
-    IEnumerator LerpPosition(Vector3 targetPosition, float duration)
+    IEnumerator stAnim()
     {
-        float time = 0;
-        Vector3 startPosition = item.position;
-        while (time < duration)
-        {
-            item.position = Vector3.Lerp(startPosition, targetPosition, time / duration);
-            time += Time.deltaTime;
-            yield return null;
-        }
-        item.position = targetPosition;
+        yield return new WaitForSeconds(1f);
+        anim.SetTrigger("Start");
     }
 }
