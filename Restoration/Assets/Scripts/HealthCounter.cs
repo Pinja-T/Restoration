@@ -13,6 +13,7 @@ public class HealthCounter : MonoBehaviour
     public GameObject gameOver;
     //Amount of health player has
     private float health;
+    public bool isAlive = true;
     //Is the player in the darkness
     public bool inDark;
     //How much players health is taken
@@ -35,7 +36,7 @@ public class HealthCounter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
         //Check the size of the darkness
         darknessSize = darkness.transform.localScale.x;
         //If player is in the darkness reduce health by a given amount and show health.
@@ -51,6 +52,7 @@ public class HealthCounter : MonoBehaviour
                 health = 0;
                 healthText.text = "Health: 0";
                 gameOver.SetActive(true);
+                isAlive = false;
                 return;
             }
 

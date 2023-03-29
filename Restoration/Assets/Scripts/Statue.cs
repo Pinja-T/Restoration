@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Statue : MonoBehaviour
 {
+    [SerializeField] string statueCode;
+    public bool isStatueDone = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +26,7 @@ public class Statue : MonoBehaviour
             try
             {
                 ItemID _ = other.GetComponent<ItemID>();
-                if(_.ID == "green")
+                if(_.ID == statueCode)
                 {
                     CompleteStatue(other.gameObject);
                 }
@@ -39,5 +42,6 @@ public class Statue : MonoBehaviour
     void CompleteStatue(GameObject key)
     {
         GameObject.Destroy(key);
+        isStatueDone = true;
     }
 }
