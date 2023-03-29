@@ -11,6 +11,7 @@ public class MouseLook : MonoBehaviour
 
     float xRotation;
     float yRotation;
+    [SerializeField] HealthCounter healthScript;
 
     private void Start()
     {
@@ -20,6 +21,12 @@ public class MouseLook : MonoBehaviour
 
     private void Update()
     {
+        if(!healthScript.isAlive)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            return;
+        }
         float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
         float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
 
