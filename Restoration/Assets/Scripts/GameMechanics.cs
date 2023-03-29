@@ -7,6 +7,7 @@ public class GameMechanics : MonoBehaviour
 {
     [SerializeField] List<GameObject> Patsaat = new List<GameObject>();
     [SerializeField] HealthCounter healthScript;
+    public ParticleSystem particles;
     int pL = 0;
 
     // Start is called before the first frame update
@@ -34,7 +35,7 @@ public class GameMechanics : MonoBehaviour
 
     void Win()
     {
-
+        particles.Play();
     }
 
     IEnumerator Lose()
