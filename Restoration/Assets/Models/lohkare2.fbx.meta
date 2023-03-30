@@ -3,7 +3,12 @@ guid: 37d4cb468e776cd4eb7b19c26a551cb3
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: aiFlat2
+    second: {fileID: 2100000, guid: 07633aefa5a30684496a4cebdf31af7c, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

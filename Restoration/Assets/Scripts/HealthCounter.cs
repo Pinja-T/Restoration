@@ -50,7 +50,7 @@ public class HealthCounter : MonoBehaviour
             else
             {
                 isTimeSlowed = true;
-                Time.timeScale = 0.30f;
+                Time.timeScale = 0.65f;
 
             }
         }

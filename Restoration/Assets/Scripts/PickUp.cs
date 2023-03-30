@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PickUp : MonoBehaviour
 {
+    [SerializeField] GameObject phint;
     public bool itemPicked = false;
     [SerializeField] GameObject Hands;
     Animator anim;
@@ -23,6 +24,11 @@ public class PickUp : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.TransformDirection(Vector3.forward), out RaycastHit _r, 15f))
+        {
+            if (_r.transform.tag == "Item" && !itemPicked) phint.SetActive(true);
+            else phint.SetActive(false);
+        }
         // && cooldownUntilNextPress < Time.time
         if (Input.GetKeyDown(KeyCode.F))
         {

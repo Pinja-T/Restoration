@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpredingDarkness : MonoBehaviour
 {
-
+    [SerializeField] float endSize;
     private void Start()
     {
         StartCoroutine(Lerp(60f));
@@ -14,7 +14,7 @@ public class SpredingDarkness : MonoBehaviour
     {
         
         Vector3 startValue = transform.localScale;
-        Vector3 endValue = new Vector3(153, 153, 153);
+        Vector3 endValue = new Vector3(endSize, endSize, endSize);
         float timeElapsed = 0;
         while (timeElapsed < duration)
         {
