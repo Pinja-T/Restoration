@@ -10,13 +10,14 @@ public class PickUp : MonoBehaviour
     Rigidbody rb;
     Transform item;
     public float CooldownTime;
-    float cooldownUntilNextPress;
+    AudioSource pickUpSource;
 
     // Start is called before the first frame update
     void Start()
     {
         anim = Hands.GetComponent<Animator>();
         StartCoroutine(stAnim());
+        pickUpSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -45,7 +46,7 @@ public class PickUp : MonoBehaviour
                 Drop();
             }
 
-            cooldownUntilNextPress = Time.time + CooldownTime;
+            
         }
     }
     private void FixedUpdate()
@@ -59,6 +60,7 @@ public class PickUp : MonoBehaviour
 
     public void Drop()
     {
+        if (!pickUpSource.isPlaying) pickUpSource.Play();
         rb.useGravity = true;
         rb = null;
         anim.SetTrigger("Drop");
@@ -72,6 +74,7 @@ public class PickUp : MonoBehaviour
 
     public void PickUpItem(RaycastHit h)
     {
+        if (!pickUpSource.isPlaying) pickUpSource.Play();
         rb = h.transform.GetComponent<Rigidbody>();
         item = h.transform;
         rb.useGravity = false;

@@ -48,6 +48,11 @@ public class Movement : MonoBehaviour
 
     Rigidbody rb;
 
+    [Header("Audio")]
+    [SerializeField] AudioSource sound;
+    [SerializeField] AudioSource jumpSource;
+    [SerializeField] AudioClip[] footsteps;
+
     public MovementState state;
     public enum MovementState
     {
@@ -65,6 +70,8 @@ public class Movement : MonoBehaviour
         rb.freezeRotation = true;
 
         startYScale = transform.localScale.y;
+
+        
     }
     private void Update()
     {
@@ -126,6 +133,7 @@ public class Movement : MonoBehaviour
         {
             state = MovementState.walking;
             moveSpeed = walkSpeed;
+            
         }
 
         // Mode - Air
@@ -154,9 +162,12 @@ public class Movement : MonoBehaviour
         }
 
         //on ground
-        if(grounded)
+        if (grounded)
+            {
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
-        else if(!grounded)
+            StartCoroutine(walkCheck());
+            }
+        else if (!grounded)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
     }
 
@@ -176,6 +187,10 @@ public class Movement : MonoBehaviour
         //reset y velocity
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        if(!jumpSource.isPlaying)
+        {
+            jumpSource.Play();
+        }
     }
     private void ResetJump()
     {
@@ -194,5 +209,20 @@ public class Movement : MonoBehaviour
     private Vector3 GetSlopeMoveDirection()
     {
         return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
+    }
+
+    IEnumerator walkCheck()
+    {
+        if(!sound.isPlaying)
+        {
+            if (rb.velocity != Vector3.zero)
+            {
+                sound.clip = footsteps[Random.Range(0, footsteps.Length - 1)];
+                sound.Play();
+            }
+
+            yield return new WaitForSeconds(0.5f);
+        }
+        
     }
 }

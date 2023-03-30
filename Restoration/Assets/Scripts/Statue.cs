@@ -9,12 +9,14 @@ public class Statue : MonoBehaviour
     private bool _sDone;
     GameMechanics gM;
     PickUp puS;
+    AudioSource statueSound;
 
     // Start is called before the first frame update
     void Start()
     {
         puS = GameObject.Find("ItemHolder").GetComponent<PickUp>();
         gM = GameObject.Find("GameMechanic").GetComponent<GameMechanics>();
+        statueSound = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -45,6 +47,7 @@ public class Statue : MonoBehaviour
 
     void CompleteStatue(GameObject key)
     {
+        if (!statueSound.isPlaying) statueSound.Play();
         puS.Drop();
         GameObject.Destroy(key,1);
         isStatueDone = true;

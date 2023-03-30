@@ -9,21 +9,22 @@ public class HealthCounter : MonoBehaviour
     public Collider darkness;
     //Text to show how much health player has
     public TMP_Text healthText;
-    //Text to tell the player that the game is over
-    public GameObject gameOver;
     //Amount of health player has
-    private float health;
+    public float health;
     public bool isAlive = true;
     //Is the player in the darkness
     public bool inDark;
     //How much players health is taken
     public float darknessSize;
     [SerializeField] float damageMod;
+    public bool isTimeSlowed = false;
 
     //Time to slow down the lovering of players health
     public float time;
     //Time left in the timer
     private float timer;
+
+    private float timer2;
 
     // Start is called before the first frame update
     void Start()
@@ -31,12 +32,26 @@ public class HealthCounter : MonoBehaviour
         health = 100;
         inDark = false;
         timer = time;
+        timer2 = time;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (isTimeSlowed)
+            {
+                isTimeSlowed = false;
+                Time.timeScale = 1;
+            }
+            else
+            {
+                isTimeSlowed = true;
+                Time.timeScale = 0.5f;
+
+            }
+        }
         //Check the size of the darkness
         darknessSize = darkness.transform.localScale.x;
         //If player is in the darkness reduce health by a given amount and show health.
@@ -51,7 +66,6 @@ public class HealthCounter : MonoBehaviour
             {
                 health = 0;
                 healthText.text = "Health: 0";
-                gameOver.SetActive(true);
                 isAlive = false;
                 return;
             }
@@ -61,6 +75,29 @@ public class HealthCounter : MonoBehaviour
         else if (inDark && timer > 0)
         {
             timer -= 1;
+        }
+
+        // If player slows down time take damage:
+        if (isTimeSlowed && timer2 == 0)
+        {
+            health -= health * 0.01f;
+            if (health > 0)
+            {
+                healthText.text = "Health: " + health;
+            }
+            else
+            {
+                health = 0;
+                healthText.text = "Health: 0";
+                isAlive = false;
+                return;
+            }
+
+            timer2= time;
+        }
+        else if (isTimeSlowed && timer2> 0)
+        {
+            timer2-= 1;
         }
     }
 }

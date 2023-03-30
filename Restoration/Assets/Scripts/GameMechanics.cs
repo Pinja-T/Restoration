@@ -16,6 +16,8 @@ public class GameMechanics : MonoBehaviour
     [HideInInspector]public int i = 0;
     Image B;
     Image W;
+    [SerializeField] BoxCollider portal;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +26,7 @@ public class GameMechanics : MonoBehaviour
         W = _W.GetComponent<Image>();
         pL = Patsaat.Count;
         StartCoroutine(FadeFromWhite());
+        portal.enabled = false;
     }
 
     // Update is called once per frame
@@ -33,12 +36,16 @@ public class GameMechanics : MonoBehaviour
 
         if (!healthScript.isAlive) StartCoroutine(Lose());
 
+        
+        
     }
 
+    
     void Win()
     {
         Debug.Log("Win");
-        particles.Play();
+        if(!particles.isPlaying) particles.Play();
+        portal.enabled = true;
     }
 
     IEnumerator Lose()
