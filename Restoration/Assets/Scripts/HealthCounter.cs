@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+//using TMPro;
+using UnityEngine.UI;
 
 public class HealthCounter : MonoBehaviour
 {
     //Collider object of darkness
     public Collider darkness;
     //Text to show how much health player has
-    public TMP_Text healthText;
+    //public TMP_Text healthText;
+    [SerializeField] Slider hpbar;
     //Amount of health player has
     public float health;
     public bool isAlive = true;
@@ -48,7 +50,7 @@ public class HealthCounter : MonoBehaviour
             else
             {
                 isTimeSlowed = true;
-                Time.timeScale = 0.5f;
+                Time.timeScale = 0.30f;
 
             }
         }
@@ -60,12 +62,14 @@ public class HealthCounter : MonoBehaviour
             health -= darknessSize * damageMod;
             if (health > 0)
             {
-                healthText.text = "Health: " + health;
+                hpbar.value = health;
+                //healthText.text = "Health: " + health;
             }
             else
             {
                 health = 0;
-                healthText.text = "Health: 0";
+                hpbar.value = health;
+                //healthText.text = "Health: 0";
                 isAlive = false;
                 return;
             }
@@ -80,15 +84,17 @@ public class HealthCounter : MonoBehaviour
         // If player slows down time take damage:
         if (isTimeSlowed && timer2 == 0)
         {
-            health -= health * 0.01f;
+            health -= 4;
             if (health > 0)
             {
-                healthText.text = "Health: " + health;
+                hpbar.value = health;
+                //healthText.text = "Health: " + health;
             }
             else
             {
                 health = 0;
-                healthText.text = "Health: 0";
+                hpbar.value = health;
+                //healthText.text = "Health: 0";
                 isAlive = false;
                 return;
             }
